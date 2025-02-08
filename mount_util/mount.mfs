@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -e
+
+SUDO=$([ "$(id -u)" -eq 0 ] || echo "sudo")
+
+FS_BIN=/data/cs-learning/storage/minfuse/build/minfuse
+
+print_help() {
+    echo "Usage: $0 device dir [-h] [-o options]"
+    echo "options:"
+    echo "  -h           Print this help message"
+    echo "  options      -o ro,rw,_netdev,nosuid"
+}
+
+if [ $# -lt 2 ]; then
+    echo "Error: Missing required arguments."
+    print_help
+    exit 1
+fi
+
+if [ ! -e "$FS_BIN" ]; then
+    echo "Error: $FS_BIN not found."
+    exit 1
+fi
+
+# DEVICE暂不使用，mount命令要求必须有device参数
+DEVICE=$1
+TARGET=$2
+shift 2
+
+# 检查是否提供了必要的参数
+if [ -z "$DEVICE" ] || [ -z "$TARGET" ]; then
+    echo "Error: Missing required arguments."
+    print_help
+    exit 1
+fi
+
+# 检查目标目录是否存在
+if [ ! -d "$TARGET" ]; then
+    echo "Error: Target directory $TARGET does not exist."
+    exit 1
+fi
+
+# 检查是否已经挂载
+if mountpoint -q "$TARGET"; then
+    echo "Error: $TARGET is already mounted."
+    exit 0
+fi
+
+pushd / >/dev/null
+# 防止client被oom kill, $$表示当前进程的pid
+$SUDO echo -1000 >/proc/$$/oom_score_adj
+# 执行挂载命令
+# nohup $FS_BIN $TARGET >/dev/null 2>&1 &
+$FS_BIN $TARGET
+popd >/dev/null
