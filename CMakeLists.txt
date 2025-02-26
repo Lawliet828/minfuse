@@ -3,7 +3,10 @@ project(minfuse)
 
 # 静态链接标准库
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-# set(CMAKE_EXE_LINKER_FLAGS "-static")
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(NOT TARGET spdlog)
     # Stand-alone build
@@ -16,7 +19,7 @@ if(mimalloc_FOUND)
     message(STATUS "Found mimalloc at: ${MIMALLOC_LIBRARY_DIR} (${MIMALLOC_VERSION_DIR})")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall")
 
 # pkg-config --cflags-only-I fuse3 命令可以查看头文件路径
 find_package(PkgConfig REQUIRED)
