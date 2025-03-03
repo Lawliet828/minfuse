@@ -4,16 +4,8 @@ set -e
 
 SUDO=$([ "$(id -u)" -eq 0 ] || echo "sudo")
 
-if test -e build; then
-    echo "build dir already exists; rm -rf build and re-run"
-    rm -rf build
-fi
-
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=1 $@ ..
-make -j8
-cd ..
+cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON $@
+cmake --build build -j 8
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
