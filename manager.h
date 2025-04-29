@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits.h> // for NAME_MAX
 #include <sys/types.h>
 
 #include <list>
@@ -15,8 +16,6 @@
 
 // Max 10 files can be stored in the root directory
 #define MAX_FILES 10
-
-#define MAX_FILENAME_LEN 64
 
 struct DataBlock {
   char *data;
@@ -140,7 +139,7 @@ class FileManager {
       files_[i].mode = 0;
       files_[i].size = 0;
       files_[i].is_used = false;
-      files_[i].name = (char *)malloc(MAX_FILENAME_LEN);
+      files_[i].name = (char *)malloc(NAME_MAX);
       files_[i].ino = 2;
     }
   }

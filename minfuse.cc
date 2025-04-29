@@ -56,7 +56,7 @@ static void lookup_handler(fuse_req_t req, fuse_ino_t parent,
     fuse_reply_err(req, EINVAL);
     return;
   }
-  if (strlen(name) > MAX_FILENAME_LEN) [[unlikely]] {
+  if (strlen(name) > NAME_MAX) [[unlikely]] {
     fuse_reply_err(req, ENAMETOOLONG);
     return;
   }
@@ -281,7 +281,7 @@ static void statfs_handler(fuse_req_t req, fuse_ino_t ino) {
   // f_fsid: 文件系统标识 ID
   stbuf.f_fsid = 0;
   // f_namemax: 最大文件长度
-  stbuf.f_namemax = MAX_FILENAME_LEN;
+  stbuf.f_namemax = NAME_MAX;
 
   fuse_reply_statfs(req, &stbuf);
 }

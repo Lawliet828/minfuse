@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -e
+set -euo pipefail
 
 SUDO=$([ "$(id -u)" -eq 0 ] || echo "sudo")
 

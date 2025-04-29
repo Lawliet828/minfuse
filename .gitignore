@@ -1,0 +1,13 @@
+.DS_Store
+.vscode/settings.json
+.idea/
+.VSCodeCounter/
+build/
+cmake-3.31.6/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.pyc
+*_pb2.py
+*tar.gz
+automatic_snap_test.sh
